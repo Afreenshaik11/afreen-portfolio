@@ -1,0 +1,523 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Afreen Shaik | Portfolio</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+  <style>
+    html { scroll-behavior: smooth; }
+    /* Custom keyframes for pulsating border */
+    @keyframes pulse-border {
+      0% { border-color: #38b2ac; } /* teal-400 */
+      50% { border-color: #6ee7b7; } /* emerald-300 */
+      100% { border-color: #38b2ac; }
+    }
+    .pulsate-border {
+      animation: pulse-border 2s infinite ease-in-out;
+    }
+    /* Custom keyframes for background animation */
+    @keyframes gradient-animate {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .animated-background {
+      background-size: 400% 400%;
+      animation: gradient-animate 15s ease infinite;
+    }
+    /* Style for skill hover effect */
+    .skill-card {
+      transition: all 0.3s ease;
+      transform-style: preserve-3d;
+      position: relative;
+      /* New: Add a subtle perspective for 3D effect */
+      perspective: 1000px;
+    }
+    .skill-card:hover {
+      transform: translateY(-5px) scale(1.03) rotateZ(3deg); /* Added subtle rotation */
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+    .skill-card:hover::after {
+      content: '';
+      position: absolute;
+      top: -5px;
+      left: -5px;
+      right: -5px;
+      bottom: -5px;
+      border: 2px solid #38b2ac; /* teal-400 */
+      border-radius: 0.5rem;
+      z-index: -1;
+    }
+    /* Particle container styling */
+    #particles-js {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: 0; /* Ensures particles are behind content */
+    }
+    /* Ensure content is above particles */
+    #home > *:not(#particles-js) {
+        position: relative;
+        z-index: 1;
+    }
+
+    /* Scroll indicator styling */
+    #scroll-progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 0%;
+      height: 4px;
+      background-color: #0ea5e9; /* sky-500 */
+      z-index: 9999;
+      transition: width 0.1s linear; /* Smooth fill */
+    }
+
+    /* Floating elements animation */
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0px); }
+    }
+    .float-animation {
+      animation: float 3s ease-in-out infinite;
+    }
+
+    /* New: Active section indicator in Navbar */
+    .nav-link.active {
+      color: #0ea5e9; /* sky-500 */
+      text-shadow: 0 0 8px rgba(14, 165, 233, 0.6); /* Subtle glow */
+      transform: scale(1.1);
+    }
+
+    /* New: Project card tilt effect on hover */
+    .project-card:hover {
+      transform: translateY(-8px) scale(1.03) rotateX(2deg) rotateY(2deg); /* Enhanced tilt and scale */
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4); /* More pronounced shadow */
+    }
+
+    /* New: Icon pop animation for certifications */
+    .cert-icon {
+      transition: transform 0.2s ease-out;
+    }
+    .cert-item:hover .cert-icon {
+      transform: scale(1.3) rotate(10deg);
+    }
+
+    /* New: Background element for sections */
+    .section-bg-element {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 80%;
+        height: 80%;
+        background: radial-gradient(circle, rgba(14, 165, 233, 0.05) 0%, rgba(30, 41, 59, 0) 70%); /* Subtle radial gradient */
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 0;
+        animation: pulse-element 4s infinite ease-in-out;
+    }
+
+    @keyframes pulse-element {
+        0% { transform: translate(-50%, -50%) scale(0.95); opacity: 0.1; }
+        50% { transform: translate(-50%, -50%) scale(1.05); opacity: 0.15; }
+        100% { transform: translate(-50%, -50%) scale(0.95); opacity: 0.1; }
+    }
+
+    /* New: Pop-in animation for main heading */
+    @keyframes pop-in {
+      0% { transform: scale(0.8); opacity: 0; }
+      80% { transform: scale(1.05); opacity: 1; }
+      100% { transform: scale(1); }
+    }
+    .pop-in-animation {
+      animation: pop-in 0.7s ease-out forwards;
+    }
+
+    /* New: Social icon hover effect */
+    .social-icon-hover:hover svg {
+      transform: scale(1.2) rotate(5deg);
+      filter: drop-shadow(0 0 8px rgba(14, 165, 233, 0.8)); /* Glow effect */
+    }
+    .social-icon-hover {
+        transition: all 0.3s ease-out;
+    }
+
+  </style>
+</head>
+<body class="bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#0f172a] text-white font-sans animated-background">
+
+  <div id="scroll-progress-bar"></div>
+
+  <nav class="fixed top-0 w-full bg-[#0f172a] text-white shadow-lg z-50 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+      <h1 class="text-2xl font-bold text-sky-400 tracking-wide">Afreen Shaik</h1>
+      <div class="space-x-6 text-base font-medium">
+        <a href="#home" class="nav-link hover:text-sky-400 transition duration-300 transform hover:scale-105">Home</a>
+        <a href="#about" class="nav-link hover:text-sky-400 transition duration-300 transform hover:scale-105">About</a>
+        <a href="#education" class="nav-link hover:text-sky-400 transition duration-300 transform hover:scale-105">Education</a>
+        <a href="#skills" class="nav-link hover:text-sky-400 transition duration-300 transform hover:scale-105">Skills</a>
+        <a href="#internships" class="nav-link hover:text-sky-400 transition duration-300 transform hover:scale-105">Internships</a>
+        <a href="#certifications" class="nav-link hover:text-sky-400 transition duration-300 transform hover:scale-105">Certifications</a>
+        <a href="#projects" class="nav-link hover:text-sky-400 transition duration-300 transform hover:scale-105">Projects</a>
+        <a href="#contact" class="nav-link hover:text-sky-400 transition duration-300 transform hover:scale-105">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <section id="home" class="min-h-screen flex flex-col justify-center items-center text-center p-8 pt-28 relative overflow-hidden">
+    <div id="particles-js" class="absolute inset-0 z-0"></div>
+    <img src="C:\Users\AFREEN\Downloads\passportsize pic.jpg" alt="Afreen Shaik"
+          class="rounded-full w-48 h-48 border-5 border-sky-400 shadow-2xl hover:scale-105 transition-all duration-500 mb-8 pulsate-border"
+          data-aos="zoom-in" data-aos-delay="200" />
+    <h1 class="text-5xl font-extrabold text-sky-400 mb-4 pop-in-animation" data-aos="fade-up" data-aos-delay="400">Hi, I'm Afreen Shaik</h1>
+    <p class="mt-4 text-2xl text-gray-300 font-light" data-aos="fade-up" data-aos-delay="600"><span id="typing"></span></p>
+    <div class="mt-10 space-x-6" data-aos="fade-up" data-aos-delay="800">
+      <a href="mailto:afreensahik330@gmail.com" class="bg-sky-500 text-white px-8 py-3 rounded-full shadow-lg hover:bg-sky-600 transition-all duration-300 transform hover:scale-105 float-animation">Contact Me</a>
+      <a href="https://github.com/Afreenshaik11" target="_blank" class="text-white bg-gray-700 px-8 py-3 rounded-full shadow-lg hover:bg-gray-600 transition-all duration-300 transform hover:scale-105 float-animation" style="animation-delay: 0.1s;">GitHub</a>
+      <a href="https://linkedin.com/in/contact-afreenshaik" target="_blank" class="text-white bg-blue-700 px-8 py-3 rounded-full shadow-lg hover:bg-blue-600 transition-all duration-300 transform hover:scale-105 float-animation" style="animation-delay: 0.2s;">LinkedIn</a>
+    </div>
+  </section>
+
+  <section id="about" class="p-16 bg-[#1e293b] relative overflow-hidden" data-aos="fade-right">
+    <div class="section-bg-element"></div> <h2 class="text-4xl font-bold text-sky-400 mb-8 text-center relative z-10">About Me</h2>
+    <p class="text-lg max-w-4xl mx-auto leading-relaxed text-center text-gray-200 relative z-10" data-aos="fade-up" data-aos-delay="100">
+      I am <strong>Afreen Shaik</storng>, a passionate and results-driven Information Technology student with a strong foundation in software development, cloud computing, and full-stack web technologies. My core skills include <b>Java, Python, HTML, CSS, SQL, and AWS</b>, and I enjoy applying these to build real-world solutions.<br><br>
+      I have hands-on experience in creating responsive web applications, automating resume analysis using AI models, and designing scalable cloud architectures. I take pride in writing clean, efficient code and continuously learning modern frameworks and tools.<br><br>
+      I am currently seeking opportunities to contribute to innovative tech teams where I can grow as a software engineer, collaborate effectively, and deliver impactful digital experiences.
+    </p>
+  </section>
+
+  <section id="education" class="p-16 bg-[#0f172a] relative overflow-hidden" data-aos="fade-left">
+    <div class="section-bg-element"></div> <h2 class="text-4xl font-bold text-sky-400 mb-8 text-center relative z-10">Education</h2>
+    <div class="max-w-5xl mx-auto text-center text-gray-200 space-y-8 relative z-10">
+      <div class="bg-[#1e293b] p-8 rounded-xl shadow-lg border border-sky-600 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2" data-aos="flip-up" data-aos-delay="100">
+        <h3 class="text-2xl font-semibold text-sky-300 mb-2">B.Tech in Information Technology</h3>
+        <p class="text-lg"><strong>Sir C.R. Reddy College of Engineering</strong> (2021 – 2025)</p>
+        <p class="text-md">CGPA: 8.01</p>
+      </div>
+      <div class="bg-[#1e293b] p-8 rounded-xl shadow-lg border border-sky-600 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2" data-aos="flip-up" data-aos-delay="200">
+        <h3 class="text-2xl font-semibold text-sky-300 mb-2">Intermediate (M.P.C)</h3>
+        <p class="text-lg"><strong>NRI Junior College</strong> (2019 – 2021)</p>
+        <p class="text-md">CGPA: 6.46</p>
+      </div>
+      <div class="bg-[#1e293b] p-8 rounded-xl shadow-lg border border-sky-600 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2" data-aos="flip-up" data-aos-delay="300">
+        <h3 class="text-2xl font-semibold text-sky-300 mb-2">SSC</h3>
+        <p class="text-lg"><strong>Sri Surya High School</strong> (2018 – 2019)</p>
+        <p class="text-md">CGPA: 8.3</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills" class="p-16 bg-[#1e293b]" data-aos="fade-up">
+    <div class="section-bg-element"></div> <h2 class="text-4xl font-bold text-sky-400 mb-10 text-center">Skills</h2>
+    <div class="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 text-center text-lg">
+      <div class="bg-[#0f172a] p-6 rounded-lg shadow-xl skill-card border border-sky-700" data-aos="zoom-in" data-aos-delay="50">Java</div>
+      <div class="bg-[#0f172a] p-6 rounded-lg shadow-xl skill-card border border-sky-700" data-aos="zoom-in" data-aos-delay="100">Python</div>
+      <div class="bg-[#0f172a] p-6 rounded-lg shadow-xl skill-card border border-sky-700" data-aos="zoom-in" data-aos-delay="150">HTML5</div>
+      <div class="bg-[#0f172a] p-6 rounded-lg shadow-xl skill-card border border-sky-700" data-aos="zoom-in" data-aos-delay="200">CSS3</div>
+      <div class="bg-[#0f172a] p-6 rounded-lg shadow-xl skill-card border border-sky-700" data-aos="zoom-in" data-aos-delay="250">SQL</div>
+      <div class="bg-[#0f172a] p-6 rounded-lg shadow-xl skill-card border border-sky-700" data-aos="zoom-in" data-aos-delay="300">AWS Cloud</div>
+      <div class="bg-[#0f172a] p-6 rounded-lg shadow-xl skill-card border border-sky-700" data-aos="zoom-in" data-aos-delay="350">Git / GitHub</div>
+      <div class="bg-[#0f172a] p-6 rounded-lg shadow-xl skill-card border border-sky-700" data-aos="zoom-in" data-aos-delay="400">Google Colab</div>
+    </div>
+  </section>
+
+  <section id="internships" class="p-16 bg-[#0f172a]" data-aos="zoom-in-up">
+    <div class="section-bg-element"></div> <h2 class="text-4xl font-bold text-sky-400 mb-10 text-center">Internships</h2>
+    <div class="max-w-5xl mx-auto text-left text-gray-200 space-y-10">
+      <div class="bg-[#1e293b] p-8 rounded-xl shadow-lg border border-sky-600 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2" data-aos="fade-right" data-aos-delay="100">
+        <h3 class="text-2xl font-bold text-sky-300 mb-2">Java Full Stack Developer Intern – TalentShine</h3>
+        <p class="text-md text-gray-400 mb-4">May 2024 – Aug 2024</p>
+        <p class="text-lg">Engaged in comprehensive web application development, utilizing <b>Java, Spring Boot, and Angular</b> to create robust and scalable solutions. Gained practical experience in front-end and back-end integration, API development, and database management.</p>
+      </div>
+      <div class="bg-[#1e293b] p-8 rounded-xl shadow-lg border border-sky-600 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2" data-aos="fade-right" data-aos-delay="200">
+        <h3 class="text-2xl font-bold text-sky-300 mb-2">AI/ML Intern – YBI Foundation</h3>
+        <p class="text-md text-gray-400 mb-4">May 2024 – July 2024</p>
+        <p class="text-lg">Developed and implemented various <b>Machine Learning models</b> for diverse applications. Performed extensive <b>data analysis and visualization</b> using Python, Pandas, and Matplotlib, contributing to data-driven insights and predictive modeling.</p>
+      </div>
+      <div class="bg-[#1e293b] p-8 rounded-xl shadow-lg border border-sky-600 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2" data-aos="fade-right" data-aos-delay="300">
+        <h3 class="text-2xl font-bold text-sky-300 mb-2">AWS Cloud Intern – Brainovision</h3>
+        <p class="text-md text-gray-400 mb-4">May 2023 – July 2023</p>
+        <p class="text-lg">Acquired hands-on proficiency with essential <b>AWS services</b>, including EC2, S3, VPC, and IAM. Focused on designing secure and efficient cloud architectures, data storage solutions, networking configurations, and understanding best practices for cloud deployment.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="certifications" class="p-16 bg-[#1e293b]" data-aos="fade-up">
+    <div class="section-bg-element"></div> <h2 class="text-4xl font-bold text-sky-400 mb-10 text-center">Certifications</h2>
+    <ul class="max-w-4xl mx-auto list-none text-left text-gray-200 pl-0 grid grid-cols-1 md:grid-cols-2 gap-6">
+      <li class="bg-[#0f172a] p-6 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 flex items-center border border-sky-700 cert-item" data-aos="fade-up" data-aos-delay="50">
+        <span class="text-sky-400 text-2xl mr-4 cert-icon">🌟</span> Generative AI – Google Skill Boost, L4G
+      </li>
+      <li class="bg-[#0f172a] p-6 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 flex items-center border border-sky-700 cert-item" data-aos="fade-up" data-aos-delay="100">
+        <span class="text-sky-400 text-2xl mr-4 cert-icon">📊</span> Data Analytics with Python – NPTEL
+      </li>
+      <li class="bg-[#0f172a] p-6 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 flex items-center border border-sky-700 cert-item" data-aos="fade-up" data-aos-delay="150">
+        <span class="text-sky-400 text-2xl mr-4 cert-icon">🛠️</span> DevOps Certification – Infosys Springboard
+      </li>
+      <li class="bg-[#0f172a] p-6 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 flex items-center border border-sky-700 cert-item" data-aos="fade-up" data-aos-delay="200">
+        <span class="text-sky-400 text-2xl mr-4 cert-icon">🎨</span> CSS – Great Learning
+      </li>
+      <li class="bg-[#0f172a] p-6 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 flex items-center border border-sky-700 cert-item" data-aos="fade-up" data-aos-delay="250">
+        <span class="text-sky-400 text-2xl mr-4 cert-icon">🐍</span> Python Programming – GUVI
+      </li>
+      <li class="bg-[#0f172a] p-6 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 flex items-center border border-sky-700 cert-item" data-aos="fade-up" data-aos-delay="300">
+        <span class="text-sky-400 text-2xl mr-4 cert-icon">🏆</span> CodeVita Participant – TCS Global Coding Contest, 2024
+      </li>
+    </ul>
+  </section>
+
+ <section id="projects" class="p-16 bg-[#0f172a]" data-aos="zoom-in-up">
+  <div class="section-bg-element"></div>
+  <h2 class="text-4xl font-bold text-sky-400 mb-10 text-center">Projects</h2>
+  <div class="max-w-6xl mx-auto grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+    
+    <div class="bg-gradient-to-br from-sky-50 to-sky-100 p-8 rounded-lg shadow-xl hover:shadow-2xl transition-all duration-300 transform project-card text-gray-800 border border-sky-200" data-aos="flip-right" data-aos-delay="50">
+      <h3 class="text-2xl font-bold text-sky-700 mb-3">AI Assistant for Technical Q&A</h3>
+      <p class="text-lg leading-relaxed">
+        Developed a cutting-edge <strong>AI assistant</strong> using <strong>Flask (backend)</strong> and <strong>React (frontend)</strong>, powered by <strong>GPT-4</strong>. This system efficiently resolves complex programming queries and technical challenges, providing intelligent and accurate solutions.
+      </p>
+    </div>
+
+    <div class="bg-gradient-to-br from-sky-50 to-sky-100 p-8 rounded-lg shadow-xl hover:shadow-2xl transition-all duration-300 transform project-card text-gray-800 border border-sky-200" data-aos="flip-right" data-aos-delay="100">
+      <h3 class="text-2xl font-bold text-sky-700 mb-3">Resume Analyzer using Gemini Model</h3>
+      <p class="text-lg leading-relaxed">
+        Created an innovative <strong>Generative AI tool</strong> leveraging the <strong>Gemini model</strong> to streamline resume analysis. This tool efficiently extracts key skills and keywords, providing insights to ensure <strong>ATS compliance</strong> and enhance candidate visibility.
+      </p>
+    </div>
+
+    <div class="bg-gradient-to-br from-sky-50 to-sky-100 p-8 rounded-lg shadow-xl hover:shadow-2xl transition-all duration-300 transform project-card text-gray-800 border border-sky-200" data-aos="flip-right" data-aos-delay="150">
+      <h3 class="text-2xl font-bold text-sky-700 mb-3">AWS Network Architecture</h3>
+      <p class="text-lg leading-relaxed">
+        Designed and implemented a secure and scalable <strong>AWS Virtual Private Cloud (VPC)</strong>. Configured private and public subnets, routing tables, and network ACLs to establish a robust and secure cloud network environment.
+      </p>
+    </div>
+
+    <div class="bg-gradient-to-br from-sky-50 to-sky-100 p-8 rounded-lg shadow-xl hover:shadow-2xl transition-all duration-300 transform project-card text-gray-800 border border-sky-200" data-aos="flip-right" data-aos-delay="200">
+      <h3 class="text-2xl font-bold text-sky-700 mb-3">Data Insights from Aadhaar – Qlik Sense</h3>
+      <p class="text-lg leading-relaxed">
+        Built interactive dashboards in <strong>Qlik Sense</strong> to analyze Aadhaar enrollment trends, rejection rates, top/bottom states, and registrar performance. Integrated ETL pipelines and transformed large datasets for real-time visualization. Enabled data-driven insights through visual exploration.
+      </p>
+      <a href="https://github.com/Afreenshaik11/Data-Insights-from-Aadhaar-A-Comprehensiv-e-Analysis-using-Qlik" 
+          target="_blank" class="text-sky-600 font-semibold hover:underline mt-4 inline-block">
+          View Project on GitHub →
+      </a>
+    </div>
+
+  </div>
+</section>
+
+
+  <section class="text-center py-12 bg-[#1e293b]" data-aos="fade-up">
+    <a href="C:\Users\AFREEN\Downloads\resume.pdf" download class="inline-block bg-sky-600 text-white px-10 py-4 rounded-full shadow-lg hover:bg-sky-700 transition-all duration-300 transform hover:scale-105 text-lg font-semibold float-animation" style="animation-delay: 0.3s;">
+      Download My resume <span class="ml-2">⬇️</span>
+    </a>
+  </section>
+
+  <section id="contact" class="p-16 text-center bg-[#0f172a]" data-aos="fade-up">
+    <div class="section-bg-element"></div> <h2 class="text-4xl font-bold text-sky-400 mb-8">Let's Connect</h2>
+    <p class="text-xl text-gray-300 mb-4">I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision.</p>
+    <div class="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-8 text-xl">
+      <p class="text-gray-200" data-aos="fade-left" data-aos-delay="100">📧 <a href="mailto:afreensahik330@gmail.com" class="underline text-sky-300 hover:text-sky-400 transition-colors duration-300">afreensahik330@gmail.com</a></p>
+      <p class="text-gray-200" data-aos="fade-left" data-aos-delay="200">📞 +91-9346812355</p>
+    </div>
+    <div class="mt-8 flex justify-center space-x-6" data-aos="fade-up" data-aos-delay="300">
+      <a href="https://github.com/Afreenshaik11" target="_blank" class="text-gray-300 hover:text-sky-400 transition-colors duration-300 social-icon-hover">
+        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.499.09.679-.217.679-.481 0-.237-.008-.865-.013-1.703-2.782.602-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.464-1.11-1.464-.908-.618.069-.607.069-.607 1.004.072 1.533 1.036 1.533 1.036.892 1.529 2.341 1.089 2.91.83.091-.645.356-1.088.649-1.339-2.227-.253-4.555-1.11-4.555-4.93 0-1.09.39-1.984 1.029-2.682-.103-.253-.446-1.272.098-2.65 0 0 .84-.269 2.75 1.025A9.645 9.645 0 0112 6.844c.85.004 1.7.114 2.504.337 1.909-1.294 2.747-1.025 2.747-1.025.546 1.379.202 2.398.099 2.65.64.698 1.028 1.592 1.028 2.682 0 3.83-2.332 4.673-4.566 4.922.359.307.678.915.678 1.846 0 1.334-.012 2.41-.012 2.737 0 .267.177.576.687.479C21.133 20.21 24 16.456 24 12.017 24 6.484 19.522 2 14 2h-2z" clip-rule="evenodd" /></svg>
+      </a>
+      <a href="https://linkedin.com/in/contact-afreenshaik" target="_blank" class="text-gray-300 hover:text-sky-400 transition-colors duration-300 social-icon-hover">
+        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <footer class="bg-[#1e293b] text-center p-6 text-sm text-gray-400 border-t border-gray-700">
+    <p>&copy; 2025 Afreen Shaik. All rights reserved.</p>
+  </footer>
+
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+  <script>
+    AOS.init({
+      duration: 1200, // Increased duration for smoother animations
+      once: false,    // Changed to false so elements re-animate on scroll
+      mirror: true,   // Changed to true to re-animate when scrolling back up
+    });
+
+    // Typing Animation
+    const phrases = ["Aspiring Software Engineer", "Full-Stack Developer", "Cloud & AI Enthusiast"];
+    let i = 0, j = 0, currentPhrase = [], isDeleting = false;
+    const element = document.getElementById('typing');
+    function loop() {
+      element.innerHTML = currentPhrase.join('') + '<span class="text-sky-400 animate-pulse">|</span>'; // Added animate-pulse for cursor
+      if (!isDeleting && j <= phrases[i].length) {
+        currentPhrase.push(phrases[i][j++]);
+      } else if (isDeleting && j > 0) {
+        currentPhrase.pop();
+        j--;
+      }
+      if (j === phrases[i].length) {
+        isDeleting = true;
+        setTimeout(loop, 1500); // Pause at end of phrase
+        return;
+      }
+      if (isDeleting && j === 0) {
+        isDeleting = false;
+        i = (i + 1) % phrases.length;
+        setTimeout(loop, 500); // Pause before typing next phrase
+        return;
+      }
+      setTimeout(loop, isDeleting ? 60 : 100); // Typing speed
+    }
+    loop();
+
+    // Particles.js Initialization
+    particlesJS('particles-js', {
+      "particles": {
+        "number": {
+          "value": 80,
+          "density": {
+            "enable": true,
+            "value_area": 800
+          }
+        },
+        "color": {
+          "value": "#0ea5e9" // sky-500
+        },
+        "shape": {
+          "type": "circle",
+          "stroke": {
+            "width": 0,
+            "color": "#000000"
+          },
+          "polygon": {
+            "nb_sides": 5
+          }
+        },
+        "opacity": {
+          "value": 0.5,
+          "random": false,
+          "anim": {
+            "enable": false,
+            "speed": 1,
+            "opacity_min": 0.1,
+            "sync": false
+          }
+        },
+        "size": {
+          "value": 3,
+          "random": true,
+          "anim": {
+            "enable": false,
+            "speed": 40,
+            "size_min": 0.1,
+            "sync": false
+          }
+        },
+        "line_linked": {
+          "enable": true,
+          "distance": 150,
+          "color": "#1fb2c6", // teal-400
+          "opacity": 0.4,
+          "width": 1
+        },
+        "move": {
+          "enable": true,
+          "speed": 3, /* Slower particle movement */
+          "direction": "none",
+          "random": false,
+          "straight": false,
+          "out_mode": "out",
+          "bounce": false,
+          "attract": {
+            "enable": false,
+            "rotateX": 600,
+            "rotateY": 1200
+          }
+        }
+      },
+      "interactivity": {
+        "detect_on": "canvas",
+        "events": {
+          "onhover": {
+            "enable": true,
+            "mode": "grab"
+          },
+          "onclick": {
+            "enable": true,
+            "mode": "push"
+          },
+          "resize": true
+        },
+        "modes": {
+          "grab": {
+            "distance": 140,
+            "line_linked": {
+              "opacity": 1
+            }
+          },
+          "bubble": {
+            "distance": 400,
+            "size": 40,
+            "duration": 2,
+            "opacity": 8,
+            "speed": 3
+          },
+          "repulse": {
+            "distance": 200,
+            "duration": 0.4
+          },
+          "push": {
+            "particles_nb": 4
+          },
+            "remove": {
+            "particles_nb": 2
+          }
+        }
+      },
+      "retina_detect": true
+    });
+
+    // Scroll Progress Bar Logic
+    window.onscroll = function() {
+      var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      var scrolled = (winScroll / height) * 100;
+      document.getElementById("scroll-progress-bar").style.width = scrolled + "%";
+      highlightNavLink(); // Call the new function
+    };
+
+    // New: Active Navbar Link Highlighting
+    function highlightNavLink() {
+      const sections = document.querySelectorAll('section[id]');
+      const navLinks = document.querySelectorAll('.nav-link');
+      let currentActive = '';
+
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop - document.querySelector('nav').offsetHeight; // Adjust for sticky nav
+        const sectionHeight = section.clientHeight;
+        if (pageYOffset >= sectionTop && pageYOffset < sectionTop + sectionHeight) {
+          currentActive = section.getAttribute('id');
+        }
+      });
+
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href').includes(currentActive)) {
+          link.classList.add('active');
+        }
+      });
+    }
+    highlightNavLink(); // Call on load to set initial active link
+
+  </script>
+</body>
+</html>
+```
